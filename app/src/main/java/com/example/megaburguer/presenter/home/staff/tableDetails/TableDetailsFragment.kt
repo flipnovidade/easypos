@@ -1,0 +1,444 @@
+package com.example.megaburguer.presenter.home.staff.tableDetails
+
+import android.Manifest
+import android.content.pm.PackageManager
+import android.os.Build
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.Toast
+import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.setFragmentResult
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
+import com.example.megaburguer.R
+import com.example.megaburguer.data.enum.TableStatus
+import com.example.megaburguer.data.model.OrderItem
+import com.example.megaburguer.databinding.FragmentTableDetailsBinding
+import com.example.megaburguer.databinding.DialogAuthModificationBinding
+import com.example.megaburguer.presenter.home.SharedOrderViewModel
+import com.example.megaburguer.util.GetMask
+import com.example.megaburguer.util.PrinterHelper
+import com.example.megaburguer.util.SharedPreferencesHelper
+import com.example.megaburguer.util.StateView
+import com.example.megaburguer.util.showBottomSheet
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
+
+@AndroidEntryPoint
+class TableDetailsFragment : Fragment() {
+
+    private var _binding: FragmentTableDetailsBinding? = null
+    private val binding get() = _binding!!
+
+    private val viewModel: TableDetailsViewModel by viewModels()
+    private lateinit var tableDetailsAdapter: TableDetailsAdapter
+    private val args: TableDetailsFragmentArgs by navArgs()
+    private val itemQuantityMap = mutableMapOf<String, Int>() // id do item -> quantidade
+    private val currentOrderItems = mutableListOf<OrderItem>()
+    private val removedItemIds = mutableListOf<String>()
+    private val sharedViewModel: SharedOrderViewModel by activityViewModels()
+    
+    @Inject
+    lateinit var sharedPreferencesHelper: SharedPreferencesHelper
+    
+    private var orderSent = false
+    private lateinit var date: String
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentTableDetailsBinding.inflate(inflater, container, false)
+        return binding.root
+
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        initListeners()
+
+        getOrderList(args.table.id)
+
+        configRecyclerView()
+
+    }
+
+    private fun initListeners() {
+
+        binding.back.setOnClickListener {
+            findNavController().popBackStack()
+        }
+
+        binding.btnCloseAccountSaveExtract.setOnClickListener {
+            if (currentOrderItems.isNotEmpty()) {
+                val itemsUpdate = currentOrderItems.map { item ->
+                    val newQtd = itemQuantityMap[item.id] ?: item.quantity
+                    item.copy(quantity = newQtd)
+                }
+
+                // Update print node first
+                viewModel.updateOrderPrint(itemsUpdate, removedIds = removedItemIds).observe(viewLifecycleOwner) { state ->
+                    if (state is StateView.Success) {
+                        saveExtractList(itemsUpdate)
+                    } else if (state is StateView.Error) {
+                        showBottomSheet(message = "Erro ao atualizar cozinha: ${state.message}")
+                    }
+                }
+
+            } else {
+                showBottomSheet(message = getString(R.string.txt_message_bottom_sheet_table_details))
+            }
+        }
+
+        binding.btnPrint.setOnClickListener {
+            if (currentOrderItems.isNotEmpty()) {
+                if (hasBluetoothPermission()) {
+                    val itemsUpdate = currentOrderItems.map { item ->
+                        val newQtd = itemQuantityMap[item.id] ?: item.quantity
+                        item.copy(quantity = newQtd)
+                    }
+
+                // Also update print node when printing
+                viewModel.updateOrderPrint(itemsUpdate, removedIds = removedItemIds).observe(viewLifecycleOwner) { state ->
+                    if (state is StateView.Success) {
+                        removedItemIds.clear() // Clear after successful sync
+                        printOrder(itemsUpdate)
+                    }
+                }
+                } else {
+                    showBottomSheet(message = getString(R.string.txt_message_not_permission_bluetooth))
+                }
+
+            } else {
+                showBottomSheet(message = getString(R.string.txt_message_print_bottom_sheet_table_details))
+            }
+        }
+
+    }
+
+    private fun getOrderList(tableId: String) {
+        viewModel.getOrderList(tableId).observe(viewLifecycleOwner) { stateView ->
+            when(stateView) {
+                is StateView.Loading -> {
+                    binding.progressBar.isVisible = true
+                }
+
+                is StateView.Success -> {
+                    binding.progressBar.isVisible = false
+                    currentOrderItems.clear()
+                    currentOrderItems.addAll(stateView.data ?: emptyList())
+                    tableDetailsAdapter.submitList(currentOrderItems.toList())
+
+                    validateData(currentOrderItems)
+
+                    configInformation()
+                }
+
+                is StateView.Error -> {
+                    binding.progressBar.isVisible = false
+                }
+            }
+        }
+    }
+
+    private fun validateData(orderListItem: List<OrderItem>) {
+
+        if (orderListItem.isEmpty()) {
+            binding.txtInfo.text = getString(R.string.txt_info_table_details)
+
+        } else {
+            binding.txtInfo.isVisible = false
+        }
+
+    }
+
+    private fun configInformation() {
+
+        val waitersList = currentOrderItems.map { it.nameWaiter }.distinct()
+        val waitersString = waitersList.joinToString(separator = ", ")
+        val totalItems = currentOrderItems.sumOf { it.quantity }
+        val totalPrice = currentOrderItems.sumOf { (it.price * it.quantity).toDouble() }
+
+        binding.txtNameWaiter.text = waitersString
+
+        binding.txtTitle.text = getString(R.string.txt_title_table_details, args.table.number)
+
+        binding.txtTotalItemsNumber.text = totalItems.toString()
+
+        binding.txtTotalValueReal.text = getString(R.string.txt_price_snack_manage_menu,
+            GetMask.getFormatedValue(totalPrice.toFloat()))
+
+    }
+
+    private fun configRecyclerView() {
+        tableDetailsAdapter = TableDetailsAdapter(
+            onRemoveItemClick = { orderItem, position ->
+                checkSessionAndPerform {
+                    removedItemIds.add(orderItem.id)
+                    itemQuantityMap.remove(orderItem.id)
+                    currentOrderItems.removeAt(position)
+                    tableDetailsAdapter.submitList(currentOrderItems.toList())
+                    updateTotals()
+                }
+            },
+
+            onMoreClick = { orderItem, position -> 
+                checkSessionAndPerform {
+                    onMoreItem(orderItem, position) 
+                }
+            },
+
+            onLessClick = { orderItem, position -> 
+                checkSessionAndPerform {
+                    onLessItem(orderItem, position) 
+                }
+            },
+
+            quantityMap = itemQuantityMap
+        )
+
+        with(binding.recycleView) {
+            setHasFixedSize(true)
+            adapter = tableDetailsAdapter
+        }
+    }
+
+    private fun checkSessionAndPerform(action: () -> Unit) {
+        if (viewModel.sessionManager.isSessionValid()) {
+            action()
+        } else {
+            showAuthDialog(action)
+        }
+    }
+
+    private fun showAuthDialog(onSuccess: () -> Unit) {
+        val dialogBinding = DialogAuthModificationBinding.inflate(layoutInflater)
+        val dialog = MaterialAlertDialogBuilder(requireContext())
+            .setView(dialogBinding.root)
+            .setCancelable(false)
+            .create()
+
+        // Load saved credentials if any
+        val savedEmail = sharedPreferencesHelper.getSavedEmail()
+        val savedPassword = sharedPreferencesHelper.getSavedPassword()
+        
+        if (savedEmail != null) {
+            dialogBinding.editEmail.setText(savedEmail)
+            dialogBinding.editPassword.setText(savedPassword)
+            dialogBinding.checkRememberCredentials.isChecked = true
+        }
+
+        dialogBinding.btnCancel.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        dialogBinding.btnConfirm.setOnClickListener {
+            val email = dialogBinding.editEmail.text.toString().trim()
+            val password = dialogBinding.editPassword.text.toString().trim()
+            val remember = dialogBinding.checkRememberCredentials.isChecked
+
+            if (email.isNotEmpty() && password.isNotEmpty()) {
+                dialogBinding.progressBar.isVisible = true
+                dialogBinding.btnConfirm.isEnabled = false
+                
+                viewModel.login(email, password).observe(viewLifecycleOwner) { state ->
+                    when (state) {
+                        is StateView.Loading -> { }
+                        is StateView.Success -> {
+                            dialogBinding.progressBar.isVisible = false
+                            if (remember) {
+                                sharedPreferencesHelper.saveCredentials(email, password)
+                            } else {
+                                sharedPreferencesHelper.clearSavedCredentials()
+                            }
+                            dialog.dismiss()
+                            onSuccess()
+                        }
+                        is StateView.Error -> {
+                            dialogBinding.progressBar.isVisible = false
+                            dialogBinding.btnConfirm.isEnabled = true
+                            showBottomSheet(message = getString(R.string.account_not_register_or_password_invalid))
+                        }
+                    }
+                }
+            } else {
+                showBottomSheet(message = getString(R.string.txt_email_empty))
+            }
+        }
+
+        dialog.show()
+    }
+
+    private fun onMoreItem(orderItem: OrderItem, position: Int) {
+        val currentQtd = itemQuantityMap[orderItem.id] ?: orderItem.quantity
+        itemQuantityMap[orderItem.id] = currentQtd + 1
+        tableDetailsAdapter.notifyItemChanged(position)
+
+        updateTotals()
+    }
+
+    private fun onLessItem(orderItem: OrderItem, position: Int) {
+        val currentQtd = itemQuantityMap[orderItem.id] ?: orderItem.quantity
+        if (currentQtd > 1) {
+            itemQuantityMap[orderItem.id] = currentQtd - 1
+            tableDetailsAdapter.notifyItemChanged(position)
+        }
+
+        updateTotals()
+    }
+
+    private fun updateTotals() {
+
+        // Atualize as quantidades conforme o itemQuantityMap
+        val itemsUpdate = currentOrderItems.map { item ->
+            val newQtd = itemQuantityMap[item.id] ?: item.quantity
+            item.copy(quantity = newQtd)
+        }
+
+        val totalItems = itemsUpdate.sumOf { it.quantity }
+        val totalPrice = itemsUpdate.sumOf { (it.price * it.quantity).toDouble() }
+
+        binding.txtTotalItemsNumber.text = totalItems.toString()
+        binding.txtTotalValueReal.text = getString(
+            R.string.txt_price_snack_manage_menu,
+            GetMask.getFormatedValue(totalPrice.toFloat())
+        )
+    }
+
+    private fun hasBluetoothPermission(): Boolean {
+        // Se for Android antigo (< 12), sempre retorna true (permissão é dada na instalação)
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) {
+            return true
+        }
+
+        // Se for Android novo (12+), verifica se foi concedida
+        val connectGranted = ContextCompat.checkSelfPermission(
+            requireContext(), Manifest.permission.BLUETOOTH_CONNECT
+        ) == PackageManager.PERMISSION_GRANTED
+
+        val scanGranted = ContextCompat.checkSelfPermission(
+            requireContext(), Manifest.permission.BLUETOOTH_SCAN
+        ) == PackageManager.PERMISSION_GRANTED
+
+        return connectGranted && scanGranted
+    }
+
+
+    private fun printOrder(orderListItem: List<OrderItem>) {
+        binding.progressBar.isVisible = true
+
+        val total = orderListItem.sumOf {  it.price.toDouble() * it.quantity }
+        val tableNumber = args.table.number.toInt()
+        val ptBr = Locale.forLanguageTag("pt-BR")
+        
+        // Use the date from the first item if available, otherwise current system time
+        val timestamp = if (orderListItem.isNotEmpty() && orderListItem[0].date > 0) {
+            orderListItem[0].date
+        } else {
+            System.currentTimeMillis()
+        }
+        
+        date = SimpleDateFormat("dd/MM/yyyy - HH:mm", ptBr).format(Date(timestamp))
+
+        // Roda em uma thread de IO (Background)
+        lifecycleScope.launch(Dispatchers.IO) {
+
+
+            val result = PrinterHelper().printClosingAccount(orderListItem, total, tableNumber, date )
+
+            withContext(Dispatchers.Main) {
+                binding.progressBar.isVisible = false
+
+                if (result == "Success") {
+                    Toast.makeText(requireContext(), getString(R.string.txt_message_send_success), Toast.LENGTH_SHORT).show()
+                } else {
+                    showBottomSheet(message = result)
+                }
+            }
+
+        }
+    }
+
+    private fun saveExtractList(orderItemList: List<OrderItem>) {
+        viewModel.saveExtractList(orderItemList).observe(viewLifecycleOwner) { stateView ->
+            when(stateView) {
+                is StateView.Loading -> {
+
+                }
+
+                is StateView.Success -> {
+
+                    closeAccount()
+
+                }
+
+                is StateView.Error -> {
+                    showBottomSheet(message = stateView.message ?: getString(R.string.error_generic))
+                }
+            }
+        }
+    }
+
+    private fun closeAccount(idTable: String = args.table.id) {
+        viewModel.deleteOrderItem(idTable).observe(viewLifecycleOwner) { stateView ->
+            when(stateView) {
+                is StateView.Loading -> {
+
+                }
+
+                is StateView.Success -> {
+
+
+                    val bundle = Bundle().apply {
+                        putBoolean("account_closed", true)
+                        putString("table_name", getString(R.string.txt_title_table, args.table.number))
+                    }
+
+                    // Define o resultado para a tela anterior pegar
+                    setFragmentResult("close_request", bundle)
+
+                    orderSent = true
+
+                    sharedViewModel.setTableStatus(idTable, TableStatus.OPEN)
+
+                    // Navega de volta
+                    findNavController().popBackStack()
+
+                }
+
+                is StateView.Error -> {
+                    showBottomSheet(message = stateView.message ?: getString(R.string.error_generic))
+                }
+
+            }
+        }
+    }
+
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        if (!orderSent) {
+            sharedViewModel.setTableStatus(args.table.id, TableStatus.OPEN)
+
+        }
+        _binding = null
+    }
+
+
+}

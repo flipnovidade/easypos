@@ -1,0 +1,305 @@
+<resources>
+    <string name="app_name">Easy POS</string>
+
+    <!--    Generic-->
+    <string name="txt_email">E-mail</string>
+    <string name="txt_password">Senha</string>
+    <string name="divider">divisor</string>
+    <string name="error_generic">Error desconhecido, tente novamente mais tarde.</string>
+    <string name="txt_btn_bottom_sheet_delete">DELETAR</string>
+    <string name="txt_chip_group_burgers">Hambúrgueres</string>
+    <string name="txt_chip_group_portions">Porções</string>
+    <string name="txt_chip_group_drinks">Bebidas</string>
+    <string name="txt_chip_group_combos">Combos</string>
+    <string name="txt_title_table">Mesa %s</string>
+    <string name="btn_send_print">Imprimir</string>
+    <string name="back_icon">icone voltar</string>
+    <string name="icon_lock">icone cadeado</string>
+    <string name="txt_message_send_success">Enviado para impressora!</string>
+    <string name="txt_message_not_permission_bluetooth">Permissão de Bluetooth necessária. Por favor, habilite nas configurações ou reinicie o app.</string>
+
+    <!--    Splash Fragment-->
+    <string name="txt_logo_1">Easy</string>
+    <string name="txt_logo_2">POS</string>
+    <string name="description_logo">Logo easy POS</string>
+
+    <!--    Login Fragment-->
+    <string name="txt_logo_1_login">Easy</string>
+    <string name="txt_logo_2_login">POS</string>
+    <string name="description_logo_login">Logo Easy POS</string>
+    <string name="hint_email">Digite seu e-mail</string>
+    <string name="hint_password">Digite sua senha</string>
+    <string name="btn_login">Entrar</string>
+    <string name="txt_email_empty">Por favor, preencha seu e-mail</string>
+    <string name="txt_password_empty">Por favor, preencha sua senha</string>
+
+    <!--    Register Fragment-->
+    <string name="txt_new_user_register">Novo Usuário</string>
+    <string name="txt_title_register">Registrar Usuário</string>
+    <string name="txt_type_user_register">Tipo de Usuário</string>
+    <string name="txt_title_subtitle_register">Cadastrar novos garçons</string>
+    <string name="hint_user">Usuário</string>
+    <string name="hint_user_name_register">Digite seu nome</string>
+    <string name="hint_email_register">Digite um e-mail válido</string>
+    <string name="hint_password_register">Digite uma senha forte</string>
+    <string name="hint_select_type_user_register">Selecione o tipo de usuário</string>
+    <string name="txt_description_full_name">Usuário/Nome</string>
+    <string name="btn_register">Cadastrar Usuário</string>
+    <string name="name_empty_register">Digite seu nome </string>
+    <string name="email_empty_register">Preencha o campo email</string>
+    <string name="password_empty_register">Preencha o campo senha</string>
+    <string name="type_user_empty_register">Selecione o tipo de usuário</string>
+    <string name="txt_message_register">Por questões de segurança você será redirecionado para a tela de login</string>
+
+    <!--   Recover Fragment-->
+    <string name="txt_new_user_recover">Redefinir Senha</string>
+    <string name="txt_title_recover">Alterar Senha</string>
+    <string name="txt_user_recover">Selecione o Usuário</string>
+    <string name="txt_title_subtitle_recover">Alterar senha de usuários</string>
+    <string name="txt_title_subtitle_recover_2">Selecione o usuário</string>
+    <string name="hint_select_user_recover">-- Selecione um usuário --</string>
+    <string name="btn_recover">Alterar Senha</string>
+    <string name="name_empty_recover">Selecione um usuário </string>
+    <string name="link_recover_password">Link de recuperação de senha enviado com sucesso!</string>
+    <string name="txt_btn_recover_password">Recuperar Senha</string>
+    <string name="txt_msg_recover_password">Digite seu e-mail para receber o link de recuperação de senha.</string>
+    <string name="btn_send">Enviar</string>
+
+    <!--   Delete User Fragment-->
+    <string name="txt_title_delete_user">Deletar Usuário</string>
+    <string name="txt_title_subtitle_delete_user">Excluir usuários registrados</string>
+    <string name="icon_delete">icone deletar</string>
+    <string name="txt_title_delete_user_2">Deletar usuário</string>
+    <string name="txt_title_subtitle_delete_user_2">Selecione o usuário</string>
+    <string name="txt_delete_user">Selecione o Usuário</string>
+    <string name="hint_select_user_delete">-- Selecione um usuário --</string>
+    <string name="btn_delete_user">Excluir Usuário</string>
+    <string name="name_empty_delete_user">Selecione um usuário </string>
+    <string name="delete_user_success_message">Usuário deletado com sucesso</string>
+    <string name="delete_icon">icone deletar</string>
+
+
+    <!--    Home Admin Fragment-->
+    <string name="txt_panel_title">Painel Administrativo</string>
+    <string name="txt_greeting_admin">Olá, %s</string>
+    <string name="txt_greeting_admin_sub">Olá, Adm</string>
+    <string name="txt_select_option_title">Selecione uma opção</string>
+    <string name="txt_select_option_subtitle">Escolha uma área para gerenciar</string>
+    <string name="txt_manage_tables_title">Gerenciar Mesas</string>
+    <string name="txt_add_or_remove_tables">Adicionar ou remover mesas</string>
+    <string name="txt_choose_user_title">Escolher Usuário</string>
+    <string name="txt_register_user_title">Registrar Usuário</string>
+    <string name="txt_choose_user">Escolher usuário para atendimento</string>
+    <string name="txt_register_user_new">Cadastrar novos garçons</string>
+    <string name="txt_change_password_title">Alterar Senha</string>
+    <string name="txt_change_password_user">Trocar senha de usuários</string>
+    <string name="txt_delete_user_title">Deletar usuário</string>
+    <string name="txt_delete_user_subtitle">Excluir usuários registrados</string>
+    <string name="txt_manage_menu_title">Gerenciar Cardápio</string>
+    <string name="txt_add_new_menu_title">Adicionar novos lanches e preços</string>
+    <string name="icon_settings">icone configuração</string>
+    <string name="icon_logout">icone deslogar</string>
+    <string name="icon_manage_tables">icone gerenciar mesas</string>
+    <string name="icon_user_register">icone registrar usuário</string>
+    <string name="icon_user_choose">icone escolhe usuário</string>
+    <string name="icon_change_password">icone alterar senha</string>
+    <string name="icon_manage_menu">icone gerenciar mesas</string>
+
+    <!--    Home Waiter Fragment-->
+    <string name="txt_panel_title_waiter">Selecione a Mesa</string>
+    <string name="txt_greeting_waiter">Olá, %s</string>
+    <string name="txt_greeting_waiter_sub">Olá, Atendente</string>
+    <string name="txt_caption_home_waiter">Legenda:</string>
+    <string name="txt_available_home_waiter">Disponível</string>
+    <string name="txt_busy_home_waiter">Ocupada</string>
+    <string name="txt_table_busy_home_waiter">Mesa Ocupada</string>
+
+    <!--    Home Staff Fragment-->
+    <string name="txt_panel_title_staff">Selecione a Mesa</string>
+    <string name="txt_greeting_staff">Olá, %s</string>
+    <string name="txt_caption_home_staff">Legenda:</string>
+    <string name="txt_available_home_staff">Disponível</string>
+    <string name="txt_busy_home_staff">Ocupada</string>
+    <string name="btn_view_extract_day_staff">Ver extrato\n diário</string>
+    <string name="txt_message_permission_not_staff">Sem a permissão de Bluetooth, a impressão automática e manual não funcionará.</string>
+    <string name="txt_message_permission_yes_staff">Permissão de impressora concedida</string>
+    <string name="txt_message_orders_line_staff">Pedidos na fila, ative o Bluetooth!</string>
+
+    <!--    Home Kitchen Fragment-->
+    <string name="txt_panel_title_kitchen">Lista de Pedidos</string>
+    <string name="txt_title_kitchen_options">Como gostaria de exibir seus itens?</string>
+    <string name="txt_option_item_to_item">Item a item</string>
+    <string name="txt_option_by_category">Por categoria</string>
+    <string name="txt_message_print_bottom_sheet_kitchen_pedido">Para imprimir o item é necessário ter pedido registrado.</string>
+
+    <!--    Manage Tables Fragment-->
+    <string name="txt_title_manage_tables">Gerenciar Mesas</string>
+    <string name="txt_title_subtitle_manage_tables">Adicionar ou remover mesas</string>
+    <string name="hint_choice_tables">Ex: 13</string>
+    <string name="btn_manage_tables">Adicionar</string>
+    <string name="number_tables">Número da Mesa</string>
+    <string name="txt_add_tables_manage">Adicionar Nova Mesa</string>
+    <string name="txt_tables_register_manage">Mesas Cadastradas</string>
+    <string name="txt_description_grid_manage">img_grid</string>
+    <string name="txt_description_arrow_back_manage">img_arrow_back</string>
+    <string name="txt_description_add_table">Digite um número para criar uma mesa</string>
+    <string name="create_table_success">Mesa criada com sucesso!</string>
+    <string name="message_delete_table">Para deletar a mesa clique no botão abaixo.</string>
+    <string name="txt_message_add_success_manage_table">item adicionado com sucesso</string>
+
+    <!--    Manage Menu Fragment-->
+    <string name="txt_title_manage_menu">Gerenciar Cardápio</string>
+    <string name="txt_title_subtitle_manage_menu">Adicionar e editar itens do menu</string>
+    <string name="txt_add_new_manage_menu_title">Adicionar Novo Item</string>
+    <string name="txt_description_menu_book">img_menu_book</string>
+    <string name="txt_name_item_manage_menu">Nome do item</string>
+    <string name="txt_hint_description_item_manage_menu">Ex: Burguer Especial</string>
+    <string name="txt_price_manage_menu">Preço (R$)</string>
+    <string name="txt_hint_price_manage_menu">R$ 0,00</string>
+    <string name="txt_category_price_manage_menu">Categoria</string>
+    <string name="txt_select_category_manage_menu">Selecione</string>
+    <string name="btn_manage_menu">Adicionar Item</string>
+    <string name="txt_title_hamburger">Hambúrgueres</string>
+    <string name="txt_name_item_empty">Digite o nome do item</string>
+    <string name="txt_price_empty">Digite o preço do item</string>
+    <string name="txt_category_empty">Selecione a Categoria do item</string>
+    <string name="message_delete_menu">Para deletar o item clique no botão abaixo.</string>
+
+    <!--    Update Manage Menu Fragment-->
+    <string name="txt_title_update_manage_menu">Editar Item</string>
+    <string name="txt_title_subtitle_update_manage_menu">Editar itens do menu</string>
+    <string name="txt_item_update_manage_menu_title">Atualizar Item</string>
+    <string name="txt_name_item_update_manage_menu">Nome do item</string>
+    <string name="txt_hint_description_item_update_manage_menu">Ex: Burguer Especial</string>
+    <string name="txt_price_update_manage_menu">Preço (R$)</string>
+    <string name="txt_hint_update_price_manage_menu">R$ 0,00</string>
+    <string name="txt_category_price_update_manage_menu">Categoria</string>
+    <string name="txt_select_update_category_manage_menu">Selecione</string>
+    <string name="btn_update_manage_menu">Atualizar Item</string>
+    <string name="txt_update_name_item_empty">Digite o nome do item</string>
+    <string name="txt_update_price_empty">Digite o preço do item</string>
+    <string name="txt_update_category_empty">Selecione a Categoria do item</string>
+    <string name="txt_message_add_success_update_manage_table">item atualizado com sucesso!</string>
+
+
+    <!--    Create Order Fragment-->
+    <string name="txt_title_subtitle_create_order">Selecione os itens</string>
+    <string name="btn_create_order">Ver Pedidos</string>
+    <string name="message_empty_order">Adicione um pedido para conseguir visualiza-lo.</string>
+    <string name="message_add_empty_order">Para criar uma observação adicione um item.</string>
+
+    <!--    View Order Fragment-->
+    <string name="txt_title_view_order">Resumo do Pedido</string>
+    <string name="txt_waiter_view_order">Atendente:</string>
+    <string name="txt_total_items_view_order">Total de itens:</string>
+    <string name="txt_total_value_view_order">Total:</string>
+    <string name="btn_send_kitchen_view_order">Enviar para Cozinha</string>
+    <string name="txt_price_view_order">R$ %s</string>
+    <string name="txt_message_order_send_success">Pedido enviado para cozinha.</string>
+
+
+    <!--    Table Details Fragment-->
+    <string name="txt_title_table_details">Pedido - Mesa %s</string>
+    <string name="txt_title_subtitle_table_details">Resumo do Pedido</string>
+    <string name="txt_waiter_table_details">Atendentes:</string>
+    <string name="txt_total_items_table_details">Total de itens:</string>
+    <string name="txt_total_value_table_details">Total:</string>
+    <string name="btn_send_kitchen_table_details">Encerrar Conta - Cliente Pagou</string>
+    <string name="txt_price_table_details">R$ %s</string>
+    <string name="txt_info_table_details">Nenhum pedido registrado!</string>
+    <string name="txt_message_bottom_sheet_table_details">Para encerrar conta é necessário ter pedido registrado.</string>
+    <string name="txt_message_print_bottom_sheet_table_details">Para imprimir a conta é necessário ter pedido registrado.</string>
+    <string name="txt_message_close_account_success_table_details">Conta da %s encerrada com sucesso</string>
+    <string name="txt_title_auth_dialog">Autenticação Necessária</string>
+    <string name="txt_subtitle_auth_dialog">Confirme suas credenciais para editar o pedido.</string>
+    <string name="txt_remember_credentials">Lembrar credenciais</string>
+    <string name="btn_confirm">Confirmar</string>
+    <string name="btn_cancel">Cancelar</string>
+
+
+    <!--    Extract Fragment-->
+    <string name="txt_title_toolbar_extract">Extrato - Diário</string>
+    <string name="txt_title_subtitle_extract">Resumo do dia</string>
+    <string name="btn_extract_clean_day">Limpar Histórico do Dia</string>
+    <string name="txt_current_date">Data:</string>
+    <string name="txt_sold_total_extract">TOTAL:</string>
+    <string name="txt_info_extract">Nenhum pedido registrado!</string>
+    <string name="txt_message_bottom_sheet_extract">Para limpar histórico é necessário ter pedido registrado.</string>
+    <string name="txt_message_print_bottom_sheet_extract">Para imprimir o extrato é necessário ter pedido registrado.</string>
+    <string name="txt_title_extract">EXTRATO DO DIA</string>
+    <string name="txt_title_mega_burger">Easy POS</string>
+    <string name="txt_quantity_item_extract">Qtd Item</string>
+    <string name="txt_value_extract">Valor</string>
+    <string name="txt_line_extract">--------------------------------------------</string>
+    <string name="txt_price_snack_extract">R$ %s</string>
+    <string name="txt_extract_clean_success">Histórico do dia limpo com sucesso!</string>
+
+
+    <!--    Item Manage Menu-->
+    <string name="txt_name_snack_manage_menu">Mega Burguer Especial</string>
+    <string name="txt_price_snack_manage_menu">R$ %s</string>
+    <string name="image_edit_manage_menu">image edit</string>
+
+    <!--    Item Tables Manage-->
+    <string name="txt_card_tables_manage">Mesa</string>
+    <string name="txt_card_number_tables_manage">1</string>
+    <string name="image_delete">icone deletar</string>
+
+    <!--    Item Tables Waiter-->
+    <string name="txt_card_tables_waiter">Mesa</string>
+    <string name="txt_card_number_tables_waiter">1</string>
+    <string name="image_profile_waiter">icone perfil</string>
+
+    <!--    Item Create Order-->
+    <string name="txt_quantity_item">%sx</string>
+    <string name="btn_create_order_add_item">Adicionar</string>
+    <string name="txt_btn_obs">OBS</string>
+
+    <!--    Item View Order-->
+    <string name="txt_value_each_view_order">R$: %s cada</string>
+    <string name="txt_value_sub_total_view_order">Subtotal: R$: %s</string>
+    <string name="btn_less_view_order">-</string>
+    <string name="btn_more_view_order">+</string>
+    <string name="btn_remove_item_view_order">Remover</string>
+    <string name="btn_view_obs_view_order">Ver OBS</string>
+
+    <!--    Item Extract Line-->
+    <string name="txt_quantity_item_extract_line">%sx %s</string>
+    <string name="txt_value_each_extract_line">R$: %s cada</string>
+    <string name="txt_value_sub_total_extract_line">R$: %s</string>
+
+
+    <!--    Error Firebase Authentication-->
+    <string name="account_not_register_or_password_invalid">E-mail ou senha inválidos. Por favor, verifique e tente novamente.</string>
+    <string name="email_invalid">O formato do e-mail digitado é inválido.</string>
+    <string name="this_email_used">Este e-mail já está em uso.</string>
+    <string name="enter_password_stronger">Sua senha é muito fraca. Use pelo menos 6 caracteres.</string>
+    <string name="error_register">Ocorreu um erro no registro. Tente novamente.</string>
+    <string name="error_user_not_found">Erro, usuário não autenticado.</string>
+
+    <!--    Bottom Sheet-->
+    <string name="title_bottom_sheet">Atenção</string>
+    <string name="msg_bottom_sheet">Mensagem</string>
+    <string name="msg_bottom_sheet_logout">Para deslogar clique no botão abaixo</string>
+    <string name="btn_bottom_sheet_logout">CONFIRMAR</string>
+    <string name="btn_bottom_sheet">Entendi</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!--    Bottom Sheet Observation-->
+    <string name="txt_message_bottom_sheet_observation">Alguma observação?(Opcional)</string>
+    <string name="txt_edit_hint_bottom_sheet_observation">Ex: sem cebola, sem bacon, sem queijo, com gelo e limâo…\n\n</string>
+    <string name="btn_bottom_sheet_observation_cancel">Cancelar</string>
+    <string name="btn_bottom_sheet_observation_save">Salvar</string>
+    <string name="txt_price_bottom_sheet_observation">R$ %s</string>
+
+    <!--    Bottom Sheet View Observation-->
+    <string name="txt_message_bottom_sheet_view_observation">Sua observação:</string>
+    <string name="txt_edit_hint_bottom_sheet_view_observation">\n\n\n</string>
+    <string name="btn_bottom_sheet_view_observation_save">OK</string>
+    <string name="txt_price_bottom_sheet_view_observation">R$ %s</string>
+
+    <!--    Choose User Fragment-->
+    <string name="txt_title_choose_user">Escolha Usuário</string>
+    <string name="txt_title_subtitle_choose_user">Escolher Usuário</string>
+
+</resources>

@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="8dp">
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/materialCardView2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:strokeWidth="1dp"
+        app:cardBackgroundColor="@color/mega_burger_background"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:strokeColor="@color/mega_burger_gray_card">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="18dp">
+
+            <TextView
+                android:id="@+id/name_item"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                style="@style/MegaBurguer.Text.Title"
+                app:layout_constraintEnd_toStartOf="@+id/btn_less"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Burger Clássico" />
+
+            <TextView
+                android:id="@+id/txt_value_each"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                style="@style/MegaBurguer.Text.Title"
+                android:textStyle="normal"
+                android:textColor="@color/mega_burger_gray"
+                app:layout_constraintEnd_toStartOf="@+id/btn_remove"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/name_item"
+                tools:text="@string/txt_value_each_view_order" />
+
+            <TextView
+                android:id="@+id/txt_value_sub_total"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                style="@style/MegaBurguer.Text.Title"
+                android:textStyle="normal"
+                android:textColor="@color/mega_burger_orange_strong"
+                app:layout_constraintEnd_toStartOf="@+id/btn_remove"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txt_value_each"
+                tools:text="@string/txt_value_sub_total_view_order" />
+
+            <TextView
+                android:id="@+id/btn_less"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_more_less_indicator"
+                android:layout_marginEnd="8dp"
+                android:paddingHorizontal="12dp"
+                android:paddingVertical="6dp"
+                android:text="@string/btn_less_view_order"
+                android:textColor="@color/mega_burger_gray"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toStartOf="@+id/txt_quantity_item"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+            <TextView
+                android:id="@+id/txt_quantity_item"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:paddingHorizontal="8dp"
+                android:paddingVertical="6dp"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toStartOf="@+id/btn_more"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="1" />
+
+            <TextView
+                android:id="@+id/btn_more"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/bg_more_less_indicator"
+                android:paddingHorizontal="12dp"
+                android:paddingVertical="6dp"
+                android:text="@string/btn_more_view_order"
+                android:textColor="@color/mega_burger_gray"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_view_obs"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:insetTop="6dp"
+                android:insetBottom="6dp"
+                android:text="@string/btn_view_obs_view_order"
+                android:textColor="@color/mega_burger_green"
+                app:backgroundTint="@color/mega_burger_background"
+                app:cornerRadius="8dp"
+                app:icon="@drawable/ic_edit_note"
+                app:iconGravity="textStart"
+                app:iconPadding="4dp"
+                app:iconTint="@color/mega_burger_green"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txt_value_sub_total" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_remove"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:insetTop="6dp"
+                android:insetBottom="6dp"
+                android:text="@string/btn_remove_item_view_order"
+                android:textColor="@color/mega_burger_red"
+                app:backgroundTint="@color/mega_burger_background"
+                app:cornerRadius="8dp"
+                app:icon="@drawable/ic_delete"
+                app:iconGravity="textStart"
+                app:iconPadding="4dp"
+                app:iconTint="@color/mega_burger_red"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txt_quantity_item" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

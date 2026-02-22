@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="color_default">#0C0C0D</color>
+
+    <!-- Mega Burger Theme Colors -->
+    <color name="mega_burger_orange_primary">#F4791F</color>
+    <color name="mega_burger_orange_secondary">#D99000</color>
+    <color name="mega_burger_orange_icon">#52F85D3F</color>
+    <color name="mega_burger_gray_card">#2C2C2E</color>
+    <color name="mega_burger_gray_card_strong">#1E2939</color>
+    <color name="mega_burger_orange_strong">#F85D3F</color>
+    <color name="mega_burger_background">#1C1C1E</color>
+    <color name="mega_burger_red">#E93237</color>
+    <color name="mega_burger_gray">#727C95</color>
+    <color name="mega_burger_green">#00A53E</color>
+    <color name="mega_burger_green_transparent">#2100A53E</color>
+    <color name="color_gray">#A1A5B4</color>
+    <color name="mega_burger_blue">#4892E9</color>
+    <color name="mega_burger_extract_date_price">#666666</color>
+    <color name="mega_burger_extract_line">#CCCCCC</color>
+</resources>

@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="16dp"
+    android:layout_marginVertical="8dp"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="4dp"
+    app:strokeColor="@color/mega_burger_orange_strong"
+    app:strokeWidth="1dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp">
+
+        <!-- Collapsed Content -->
+        <TextView
+            android:id="@+id/text_table_name"
+            style="@style/MegaBurguer.Text.Title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Mesa 01" />
+
+        <TextView
+            android:id="@+id/text_order_time"
+            style="@style/MegaBurguer.Text.Subtitle.White"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="@+id/text_table_name"
+            app:layout_constraintStart_toEndOf="@+id/text_table_name"
+            app:layout_constraintTop_toTopOf="@+id/text_table_name"
+            tools:text="19:15" />
+
+        <TextView
+            android:id="@+id/text_item_name"
+            style="@style/MegaBurguer.Text.Subtitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:textColor="@color/white"
+            app:layout_constraintEnd_toStartOf="@+id/text_quantity"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_table_name"
+            tools:text="X-Bacon" />
+
+        <TextView
+            android:id="@+id/text_quantity"
+            style="@style/MegaBurguer.Text.Title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toBottomOf="@+id/text_item_name"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/text_item_name"
+            tools:text="x2" />
+
+        <!-- Expandable Content -->
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/group_expanded"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:constraint_referenced_ids="text_waiter_label,text_waiter_name,text_observation_label,text_observation,btn_printed,btn_print_item"
+            tools:visibility="visible" />
+
+        <View
+            android:id="@+id/divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="12dp"
+            android:background="@color/black"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@+id/text_item_name"
+            app:layout_goneMarginTop="12dp"
+            tools:visibility="visible" />
+
+        <TextView
+            android:id="@+id/text_waiter_label"
+            style="@style/MegaBurguer.Text.Subtitle.White"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="Garçom:"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/divider" />
+
+        <TextView
+            android:id="@+id/text_waiter_name"
+            style="@style/MegaBurguer.Text.Subtitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toBottomOf="@+id/text_waiter_label"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/text_waiter_label"
+            app:layout_constraintTop_toTopOf="@+id/text_waiter_label"
+            tools:text="João Silva" />
+
+        <TextView
+            android:id="@+id/text_observation_label"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            style="@style/MegaBurguer.Text.Subtitle.White"
+            android:layout_marginTop="8dp"
+            android:text="Observação:"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_waiter_label" />
+
+        <TextView
+            android:id="@+id/text_observation"
+            style="@style/MegaBurguer.Text.Subtitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:textColor="@color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_observation_label"
+            tools:text="Sem cebola, bem passado." />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_print_item"
+            style="@style/MegaBurguer.Button.Second"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
+            android:text="Imprimir"
+            android:textColor="@color/black"
+            app:layout_constraintEnd_toStartOf="@+id/btn_printed"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_observation" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_printed"
+            style="@style/MegaBurguer.Button.Second"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Concluído"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/btn_print_item"
+            app:layout_constraintTop_toBottomOf="@+id/text_observation" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>

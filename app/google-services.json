@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "286596559881",
+    "project_id": "pos-mega-burguer",
+    "storage_bucket": "pos-mega-burguer.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:286596559881:android:945033aebb3873f3b174d8",
+        "android_client_info": {
+          "package_name": "com.pos.mega.bruger.flipsofts"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCHqrT8CQvcpgsX3NSiHmIQrdSEmvvZ7To"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
