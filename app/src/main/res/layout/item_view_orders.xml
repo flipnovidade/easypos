@@ -48,11 +48,12 @@
 
             <TextView
                 android:id="@+id/txt_value_sub_total"
+                style="@style/MegaBurguer.Text.Title"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                style="@style/MegaBurguer.Text.Title"
-                android:textStyle="normal"
+                android:layout_marginTop="8dp"
                 android:textColor="@color/mega_burger_orange_strong"
+                android:textStyle="normal"
                 app:layout_constraintEnd_toStartOf="@+id/btn_remove"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/txt_value_each"

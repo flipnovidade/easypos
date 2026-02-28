@@ -24,22 +24,16 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class CreateOrderFragment : Fragment() {
+
     private var _binding: FragmentCreateOrderBinding? = null
     private val binding get() = _binding!!
     private val args: CreateOrderFragmentArgs by navArgs()
     private lateinit var createOrderAdapter: CreateOrderAdapter
     private val viewModel: CreateOrderViewModel by viewModels()
     private val fullMenuList = mutableListOf<Menu>()
-
-    private val itemQuantityMap = mutableMapOf<String, Int>() // id do item -> quantidade
-
-    private lateinit var typeCategory: String
-
     private val sharedViewModel: SharedOrderViewModel by activityViewModels()
-
     private var orderSent = false
-
-    private val observationSaveMap = mutableMapOf<String, String>()
+    private lateinit var typeCategory: String
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -76,25 +70,7 @@ class CreateOrderFragment : Fragment() {
         }
 
         binding.btnViewOrders.setOnClickListener {
-            val currentTime = System.currentTimeMillis()
-            val orderItems = itemQuantityMap
-                .filter { it.value > 0 }
-                .map { (idItem, qtd) ->
-                    val menu = fullMenuList.find { it.id == idItem }
-                    OrderItem(
-                        id = FirebaseDatabase.getInstance().reference.push().key ?: "",
-                        idItem = idItem,
-                        idTable = args.table.id,
-                        nameTable = args.table.number,
-                        nameWaiter = args.nameUser,
-                        nameItem = menu?.nameItem ?: "",
-                        price = menu?.price ?: 0f,
-                        quantity = qtd,
-                        observation = observationSaveMap[idItem] ?: "",
-                        category = menu?.category ?: "",
-                        date = currentTime
-                    )
-                }
+            val orderItems = sharedViewModel.currentOrderItems.value ?: emptyList()
 
             if (orderItems.isNotEmpty()) {
                 orderSent = true
@@ -107,7 +83,6 @@ class CreateOrderFragment : Fragment() {
             } else {
                 showBottomSheet(message = getString(R.string.message_empty_order))
             }
-
         }
     }
 
@@ -117,34 +92,30 @@ class CreateOrderFragment : Fragment() {
 
     private fun configRecycleView() {
         createOrderAdapter = CreateOrderAdapter(
-            onAddItemClick = { menu, position -> onAddItem(menu, position) },
-
-            quantityMap = itemQuantityMap,
-
+            onAddItemClick = { menu, _ -> 
+                sharedViewModel.addItem(menu, args.table.id, args.table.number, args.nameUser)
+            },
+            quantityMap = emptyMap(),
             onAddObservationClick = { menu ->
-
-                val quant = itemQuantityMap[menu.id] ?: 0
-
+                val quant = sharedViewModel.itemQuantityMap.value?.get(menu.id) ?: 0
                 if (quant > 0) {
                     showObservationDialog(
                         nameItem = menu.nameItem,
                         priceItem = menu.price,
                         onSaveClick = { observation ->
-                            if (observation.isNotEmpty()) {
-                                observationSaveMap[menu.id,] = observation
-                            } else {
-                                observationSaveMap.remove(menu.id)
-                            }
+                            sharedViewModel.updateObservation(menu.id, observation)
                         }
                     )
                 } else {
                     showBottomSheet(message = getString(R.string.message_add_empty_order))
                 }
-
-
+            },
+            onMoreClick = { menu, _ ->
+                sharedViewModel.updateQuantity(menu.id, 1)
+            },
+            onLessClick = { menu, _ ->
+                sharedViewModel.updateQuantity(menu.id, -1)
             }
-
-
         )
 
         with(binding.recycleView) {
@@ -152,12 +123,9 @@ class CreateOrderFragment : Fragment() {
             adapter = createOrderAdapter
         }
 
-    }
-
-    private fun onAddItem(menu: Menu, position: Int) {
-        val currentQtd = itemQuantityMap[menu.id] ?: 0
-        itemQuantityMap[menu.id] = currentQtd + 1
-        createOrderAdapter.notifyItemChanged(position)
+        sharedViewModel.itemQuantityMap.observe(viewLifecycleOwner) { quantityMap ->
+            createOrderAdapter.updateQuantityMap(quantityMap)
+        }
     }
 
     private fun getMenus() {

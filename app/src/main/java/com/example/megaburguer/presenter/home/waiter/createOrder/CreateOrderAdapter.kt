@@ -14,9 +14,12 @@ import com.example.megaburguer.util.GetMask
 
 class CreateOrderAdapter(
     private val onAddItemClick: (menu: Menu, position: Int) -> Unit,
-    private val quantityMap: Map<String, Int>,
-    private val onAddObservationClick: (menu: Menu) -> Unit
+    private var quantityMap: Map<String, Int>,
+    private val onAddObservationClick: (menu: Menu) -> Unit,
+    private val onMoreClick: (menu: Menu, position: Int) -> Unit,
+    private val onLessClick: (menu: Menu, position: Int) -> Unit
 ) : ListAdapter<Menu, CreateOrderAdapter.MyViewHolder>(DIFF_CALLBACK) {
+
     companion object {
         val DIFF_CALLBACK = object : DiffUtil.ItemCallback<Menu>() {
             override fun areItemsTheSame(oldItem: Menu, newItem: Menu): Boolean {
@@ -59,22 +62,36 @@ class CreateOrderAdapter(
 
             val qtd = quantityMap[menu.id] ?: 0
             if (qtd > 0) {
-                binding.txtQuantityItem.text = binding.root.context.getString(R.string.txt_quantity_item, qtd.toString())
-                binding.txtQuantityItem.isVisible = true
+                binding.btnAddItem.isVisible = false
+                binding.containerQuantity.isVisible = true
+                binding.txtQuantityItem.text = qtd.toString()
             } else {
+                binding.btnAddItem.isVisible = true
+                binding.containerQuantity.isVisible = false
                 binding.txtQuantityItem.text = ""
-                binding.txtQuantityItem.isVisible = false
             }
 
             binding.btnAddItem.setOnClickListener {
                 onAddItemClick(menu, adapterPosition)
             }
 
+            binding.btnMoreMenu.setOnClickListener {
+                onMoreClick(menu, adapterPosition)
+            }
+
+            binding.btnLessMenu.setOnClickListener {
+                onLessClick(menu, adapterPosition)
+            }
+
             binding.btnObs.setOnClickListener {
                 onAddObservationClick(menu)
-
             }
 
         }
+    }
+
+    fun updateQuantityMap(newMap: Map<String, Int>) {
+        this.quantityMap = newMap
+        notifyDataSetChanged()
     }
 }

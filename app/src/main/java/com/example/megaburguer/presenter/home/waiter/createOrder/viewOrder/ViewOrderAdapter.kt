@@ -18,9 +18,7 @@ class ViewOrderAdapter(
     private val onRemoveItemClick: (orderItem: OrderItem, position: Int) -> Unit,
     private val onViewObservationClick: (orderItem: OrderItem) -> Unit,
     private val onMoreClick: (orderItem: OrderItem, position: Int) -> Unit,
-    private val onLessClick: (orderItem: OrderItem, position: Int) -> Unit,
-    private val quantityMap: Map<String, Int>,
-
+    private val onLessClick: (orderItem: OrderItem, position: Int) -> Unit
 ) : ListAdapter<OrderItem, ViewOrderAdapter.MyViewHolder>(DIFF_CALLBACK) {
     companion object {
         val DIFF_CALLBACK = object : DiffUtil.ItemCallback<OrderItem>() {
@@ -70,21 +68,11 @@ class ViewOrderAdapter(
             getString(R.string.txt_value_each_view_order,
                 GetMask.getFormatedValue(orderItem.price))
 
-            if (quantityMap[orderItem.id] == null) {
-                binding.txtQuantityItem.text = orderItem.quantity.toString()
+            binding.txtQuantityItem.text = orderItem.quantity.toString()
 
-                binding.txtValueSubTotal.text = binding.root.context.
-                getString(R.string.txt_value_sub_total_view_order,
-                    GetMask.getFormatedValue(orderItem.price * orderItem.quantity))
-
-            } else {
-                binding.txtQuantityItem.text = quantityMap[orderItem.id].toString()
-
-                binding.txtValueSubTotal.text = binding.root.context.
-                        getString(R.string.txt_value_sub_total_view_order,
-                    GetMask.getFormatedValue(orderItem.price * quantityMap[orderItem.id]!!))
-
-            }
+            binding.txtValueSubTotal.text = binding.root.context.
+            getString(R.string.txt_value_sub_total_view_order,
+                GetMask.getFormatedValue(orderItem.price * orderItem.quantity))
 
 
             binding.btnRemove.setOnClickListener {

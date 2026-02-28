@@ -257,7 +257,7 @@
 
     <!--    Item View Order-->
     <string name="txt_value_each_view_order">R$: %s cada</string>
-    <string name="txt_value_sub_total_view_order">Subtotal: R$: %s</string>
+    <string name="txt_value_sub_total_view_order">Subtotal:\nR$: %s</string>
     <string name="btn_less_view_order">-</string>
     <string name="btn_more_view_order">+</string>
     <string name="btn_remove_item_view_order">Remover</string>

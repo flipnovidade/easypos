@@ -57,9 +57,6 @@ class HomeWaiterFragment : Fragment() {
     private var isTablet = false
     private var selectedTable: Table? = null
     private val fullMenuList = mutableListOf<Menu>()
-    private val itemQuantityMap = mutableMapOf<String, Int>() // id do item -> quantidade
-    private val currentOrderItems = mutableListOf<OrderItem>()
-    private val observationSaveMap = mutableMapOf<String, String>()
     private var typeCategory: String = "Hambúrgueres"
     val tenMinutes: Long = 10L * 60L * 1000L
     private val handler = android.os.Handler(Looper.getMainLooper())
@@ -131,8 +128,9 @@ class HomeWaiterFragment : Fragment() {
             }
 
             binding.root.findViewById<View>(R.id.btn_send_kitchen_tablet)?.setOnClickListener {
-                if (currentOrderItems.isNotEmpty()) {
-                    saveOrderItemList(currentOrderItems)
+                val orderItems = sharedViewModel.currentOrderItems.value ?: emptyList()
+                if (orderItems.isNotEmpty()) {
+                    saveOrderItemList(orderItems)
                 } else {
                     showBottomSheet(message = getString(R.string.message_empty_order))
                 }
@@ -296,42 +294,34 @@ class HomeWaiterFragment : Fragment() {
         binding.root.findViewById<TextView>(R.id.txt_tablet_table_title)?.text = getString(R.string.txt_title_table, table.number)
         
         // Clear previous order state
-        itemQuantityMap.clear()
-        currentOrderItems.clear()
-        observationSaveMap.clear()
-        createOrderAdapter.notifyDataSetChanged()
-        viewOrderAdapter.submitList(emptyList())
-        updateTotals()
+        sharedViewModel.clearOrder()
     }
 
     private fun configTabletMenu() {
         createOrderAdapter = CreateOrderAdapter(
-            onAddItemClick = { menu, position -> onAddItem(menu, position) },
-            quantityMap = itemQuantityMap,
+            onAddItemClick = { menu, _ -> 
+                sharedViewModel.addItem(menu, selectedTable?.id ?: "", selectedTable?.number ?: "", nameUser)
+            },
+            quantityMap = emptyMap(),
             onAddObservationClick = { menu ->
-                val quant = itemQuantityMap[menu.id] ?: 0
+                val quant = sharedViewModel.itemQuantityMap.value?.get(menu.id) ?: 0
                 if (quant > 0) {
                     showObservationDialog(
                         nameItem = menu.nameItem,
                         priceItem = menu.price,
                         onSaveClick = { observation ->
-                            if (observation.isNotEmpty()) {
-                                observationSaveMap[menu.id] = observation
-                            } else {
-                                observationSaveMap.remove(menu.id)
-                            }
-                            
-                            // Update existing OrderItem if it's already in the list
-                            val index = currentOrderItems.indexOfFirst { it.idItem == menu.id }
-                            if (index != -1) {
-                                currentOrderItems[index] = currentOrderItems[index].copy(observation = observation)
-                                viewOrderAdapter.submitList(currentOrderItems.toList())
-                            }
+                            sharedViewModel.updateObservation(menu.id, observation)
                         }
                     )
                 } else {
                     showBottomSheet(message = getString(R.string.message_add_empty_order))
                 }
+            },
+            onMoreClick = { menu, _ ->
+                sharedViewModel.updateQuantity(menu.id, 1)
+            },
+            onLessClick = { menu, _ ->
+                sharedViewModel.updateQuantity(menu.id, -1)
             }
         )
 
@@ -341,12 +331,8 @@ class HomeWaiterFragment : Fragment() {
         }
 
         viewOrderAdapter = ViewOrderAdapter(
-            onRemoveItemClick = { orderItem, position ->
-                itemQuantityMap.remove(orderItem.idItem) // Note: using idItem here
-                currentOrderItems.removeAt(position)
-                viewOrderAdapter.submitList(currentOrderItems.toList())
-                createOrderAdapter.notifyDataSetChanged()
-                updateTotals()
+            onRemoveItemClick = { orderItem, _ ->
+                sharedViewModel.removeItem(orderItem.idItem)
             },
             onViewObservationClick = { orderItem ->
                 showViewObservationDialog(
@@ -355,65 +341,33 @@ class HomeWaiterFragment : Fragment() {
                     observationItem = orderItem.observation,
                 )
             },
-            onMoreClick = { orderItem, position ->
-                val currentQtd = itemQuantityMap[orderItem.idItem] ?: orderItem.quantity
-                itemQuantityMap[orderItem.idItem] = currentQtd + 1
-                currentOrderItems[position] = orderItem.copy(quantity = currentQtd + 1)
-                viewOrderAdapter.notifyItemChanged(position)
-                createOrderAdapter.notifyDataSetChanged()
-                updateTotals()
+            onMoreClick = { orderItem, _ ->
+                sharedViewModel.updateQuantity(orderItem.idItem, 1)
             },
-            onLessClick = { orderItem, position ->
-                val currentQtd = itemQuantityMap[orderItem.idItem] ?: orderItem.quantity
-                if (currentQtd > 1) {
-                    itemQuantityMap[orderItem.idItem] = currentQtd - 1
-                    currentOrderItems[position] = orderItem.copy(quantity = currentQtd - 1)
-                    viewOrderAdapter.notifyItemChanged(position)
-                    createOrderAdapter.notifyDataSetChanged()
-                    updateTotals()
-                }
-            },
-            quantityMap = itemQuantityMap
+            onLessClick = { orderItem, _ ->
+                sharedViewModel.updateQuantity(orderItem.idItem, -1)
+            }
         )
 
         binding.root.findViewById<androidx.recyclerview.widget.RecyclerView>(R.id.recycleViewOrder)?.apply {
             setHasFixedSize(true)
             adapter = viewOrderAdapter
         }
-    }
 
-    private fun onAddItem(menu: Menu, position: Int) {
-        val currentQtd = itemQuantityMap[menu.id] ?: 0
-        itemQuantityMap[menu.id] = currentQtd + 1
-        createOrderAdapter.notifyItemChanged(position)
-
-        val existingItemIndex = currentOrderItems.indexOfFirst { it.idItem == menu.id }
-        if (existingItemIndex != -1) {
-            currentOrderItems[existingItemIndex] = currentOrderItems[existingItemIndex].copy(quantity = currentQtd + 1)
-            viewOrderAdapter.notifyItemChanged(existingItemIndex)
-        } else {
-            val orderItem = OrderItem(
-                id = FirebaseDatabase.getInstance().reference.push().key ?: "",
-                idItem = menu.id,
-                idTable = selectedTable?.id ?: "",
-                nameTable = selectedTable?.number ?: "",
-                nameWaiter = nameUser,
-                nameItem = menu.nameItem,
-                price = menu.price,
-                quantity = 1,
-                observation = observationSaveMap[menu.id] ?: "",
-                category = menu.category,
-                date = System.currentTimeMillis()
-            )
-            currentOrderItems.add(orderItem)
-            viewOrderAdapter.submitList(currentOrderItems.toList())
+        // Observe SharedOrderViewModel
+        sharedViewModel.currentOrderItems.observe(viewLifecycleOwner) { items ->
+            viewOrderAdapter.submitList(items)
+            updateTotals(items)
         }
-        updateTotals()
+
+        sharedViewModel.itemQuantityMap.observe(viewLifecycleOwner) { quantityMap ->
+            createOrderAdapter.updateQuantityMap(quantityMap)
+        }
     }
 
-    private fun updateTotals() {
-        val totalItems = currentOrderItems.sumOf { it.quantity }
-        val totalPrice = currentOrderItems.sumOf { (it.price * it.quantity).toDouble() }
+    private fun updateTotals(items: List<OrderItem>) {
+        val totalItems = items.sumOf { it.quantity }
+        val totalPrice = items.sumOf { (it.price * it.quantity).toDouble() }
 
         binding.root.findViewById<TextView>(R.id.txt_total_items_tablet)?.text = totalItems.toString()
         binding.root.findViewById<TextView>(R.id.txt_total_value_tablet)?.text = 
