@@ -125,6 +125,7 @@ class ViewOrderFragment : Fragment() {
                     setFragmentResult("close_request", bundle)
 
                     sharedViewModel.setTableStatus(args.table.id, TableStatus.OPEN)
+                    sharedViewModel.clearOrder()
 
                     findNavController().navigate(R.id.homeWaiter, null,
                         NavOptions.Builder().setPopUpTo(R.id.homeWaiter, false).build())
@@ -186,6 +187,5 @@ class ViewOrderFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
-
-
+    
 }

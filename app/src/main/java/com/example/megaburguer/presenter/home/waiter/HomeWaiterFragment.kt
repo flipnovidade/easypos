@@ -185,6 +185,7 @@ class HomeWaiterFragment : Fragment() {
                     if (isTablet) {
                         selectTableTablet(table)
                     } else {
+                        sharedViewModel.clearOrder()
                         homeWaiterAdapter.notifyItemChanged(position)
                         updateTableStatus(table.id, TableStatus.CLOSED, sharedPreferencesHelper.getUserId()!!)
                         val action = HomeWaiterFragmentDirections.actionHomeWaiterFragmentToCreateOrderFragment(table, nameUser)
