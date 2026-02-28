@@ -1,0 +1,353 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context=".presenter.home.waiter.HomeWaiterFragment">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:background="@color/mega_burger_background"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/text_panel_title"
+                    style="@style/MegaBurguer.Text.Title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/txt_panel_title_waiter"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/btn_logout"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="16dp"
+                    android:contentDescription="@string/icon_logout"
+                    android:src="@drawable/ic_logout"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:tint="@color/white" />
+
+                <TextView
+                    android:id="@+id/text_greeting"
+                    style="@style/MegaBurguer.Text.Subtitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/txt_greeting_waiter"
+                    android:textSize="16sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/text_panel_title" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </com.google.android.material.appbar.MaterialToolbar>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <View
+        android:id="@+id/view_separator"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/mega_burger_orange_strong"
+        app:layout_constraintTop_toBottomOf="@+id/appBarLayout" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:baselineAligned="false"
+        android:orientation="horizontal"
+        style="@style/CustomConstraintLayout"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view_separator">
+
+        <!-- Column 1: Tables -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/container_tables_tablet"
+            android:layout_width="300dp"
+            android:layout_height="match_parent"
+            android:padding="8dp">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                app:layout_constraintBottom_toTopOf="@+id/card_legend"
+                app:layout_constraintTop_toTopOf="parent"
+                app:spanCount="2"
+                tools:listitem="@layout/item_tables" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_legend"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardBackgroundColor="@color/mega_burger_background"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="0dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:strokeColor="@color/mega_burger_gray">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="12dp">
+
+                    <TextView
+                        style="@style/MegaBurguer.Text.Title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/txt_caption_home_waiter"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:drawablePadding="8dp"
+                        android:text="@string/txt_available_home_waiter"
+                        android:textSize="12sp"
+                        app:drawableStartCompat="@drawable/bg_legend_available" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:drawablePadding="8dp"
+                        android:text="@string/txt_busy_home_waiter"
+                        android:textSize="12sp"
+                        app:drawableStartCompat="@drawable/bg_legend_occupied" />
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/mega_burger_gray" />
+
+        <!-- Column 2: Menu/Create Order -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/container_menu_tablet"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:padding="16dp"
+            android:visibility="invisible"
+            tools:visibility="visible">
+
+            <TextView
+                android:id="@+id/txt_tablet_table_title"
+                style="@style/MegaBurguer.Text.Title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Mesa 05" />
+
+            <HorizontalScrollView
+                android:id="@+id/scroll_categories"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:scrollbars="none"
+                app:layout_constraintTop_toBottomOf="@+id/txt_tablet_table_title">
+
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/chip_group_categories"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:singleLine="true"
+                    app:singleSelection="true">
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chip_burgers"
+                        style="@style/Widget.MaterialComponents.Chip.Choice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="true"
+                        android:text="@string/txt_chip_group_burgers" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chip_portions"
+                        style="@style/Widget.MaterialComponents.Chip.Choice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/txt_chip_group_portions" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chip_drinks"
+                        style="@style/Widget.MaterialComponents.Chip.Choice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/txt_chip_group_drinks" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/chip_combos"
+                        style="@style/Widget.MaterialComponents.Chip.Choice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/txt_chip_group_combos" />
+                </com.google.android.material.chip.ChipGroup>
+            </HorizontalScrollView>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycleViewMenu"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="8dp"
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                app:spanCount="2"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/scroll_categories"
+                tools:listitem="@layout/item_create_orders" />
+
+            <ProgressBar
+                android:id="@+id/progressBarMenu"
+                style="@style/MegaBurguer.ProgressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/scroll_categories" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/mega_burger_gray" />
+
+        <!-- Column 3: Order Review -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/container_order_tablet"
+            android:layout_width="350dp"
+            android:layout_height="match_parent"
+            android:padding="16dp"
+            android:visibility="invisible"
+            tools:visibility="visible">
+
+            <TextView
+                android:id="@+id/txt_review_title"
+                style="@style/MegaBurguer.Text.Title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/txt_title_view_order"
+                android:textSize="18sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycleViewOrder"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="8dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintBottom_toTopOf="@+id/container_totals"
+                app:layout_constraintTop_toBottomOf="@+id/txt_review_title"
+                tools:listitem="@layout/item_view_orders" />
+
+            <LinearLayout
+                android:id="@+id/container_totals"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginVertical="8dp"
+                    android:background="@color/mega_burger_gray" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        style="@style/MegaBurguer.Text.Title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/txt_total_items_view_order"
+                        android:textSize="14sp"
+                        android:textColor="@color/color_gray"/>
+                    <TextView
+                        android:id="@+id/txt_total_items_tablet"
+                        style="@style/MegaBurguer.Text.Title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:textSize="14sp"
+                        tools:text="3" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp">
+                    <TextView
+                        style="@style/MegaBurguer.Text.Title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/txt_total_value_view_order"
+                        android:textSize="16sp" />
+                    <TextView
+                        android:id="@+id/txt_total_value_tablet"
+                        style="@style/MegaBurguer.Text.Title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:textColor="@color/mega_burger_orange_strong"
+                        android:textSize="16sp"
+                        tools:text="R$ 83,70" />
+                </RelativeLayout>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_send_kitchen_tablet"
+                    style="@style/MegaBurguer.Button.Primary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:paddingVertical="14dp"
+                    android:text="@string/btn_send_kitchen_view_order"
+                    app:icon="@drawable/ic_print" />
+
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
