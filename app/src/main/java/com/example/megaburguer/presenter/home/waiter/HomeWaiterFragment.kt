@@ -121,6 +121,14 @@ class HomeWaiterFragment : Fragment() {
         }
 
         if (isTablet) {
+            binding.root.findViewById<View>(R.id.card_legend)?.setOnClickListener {
+                releaseLockedTables()
+                binding.root.findViewById<View>(R.id.container_menu_tablet)?.isVisible = false
+                binding.root.findViewById<View>(R.id.container_order_tablet)?.isVisible = false
+                selectedTable = null
+                sharedViewModel.clearOrder()
+            }
+            
             binding.root.findViewById<com.google.android.material.chip.ChipGroup>(R.id.chip_group_categories)?.setOnCheckedStateChangeListener { _, checkedIds ->
                 if (checkedIds.isNotEmpty()) {
                     updateFilteredList()
@@ -286,7 +294,18 @@ class HomeWaiterFragment : Fragment() {
         }
     }
 
+    private fun releaseLockedTables() {
+        val currentUserId = sharedPreferencesHelper.getUserId() ?: return
+        homeWaiterAdapter.currentList.filter { 
+            it.status == TableStatus.CLOSED && it.lockedBy == currentUserId 
+        }.forEach { table ->
+            updateTableStatus(table.id, TableStatus.OPEN)
+        }
+    }
+
     private fun selectTableTablet(table: Table) {
+        releaseLockedTables()
+        
         selectedTable = table
         updateTableStatus(table.id, TableStatus.CLOSED, sharedPreferencesHelper.getUserId()!!)
         
@@ -429,7 +448,7 @@ class HomeWaiterFragment : Fragment() {
                 is StateView.Loading -> {}
                 is StateView.Success -> {
                     Toast.makeText(requireContext(), getString(R.string.txt_message_order_send_success), Toast.LENGTH_SHORT).show()
-                    selectedTable?.let { sharedViewModel.setTableStatus(it.id, TableStatus.OPEN) }
+                    releaseLockedTables()
                     
                     // Reset Tablet UI
                     binding.root.findViewById<View>(R.id.container_menu_tablet)?.isVisible = false
@@ -453,8 +472,8 @@ class HomeWaiterFragment : Fragment() {
 
     override fun onDestroyView() {
         handler.removeCallbacks(refreshRunnable)
-        if (isTablet && selectedTable != null) {
-            sharedViewModel.setTableStatus(selectedTable!!.id, TableStatus.OPEN)
+        if (isTablet) {
+            releaseLockedTables()
         }
         super.onDestroyView()
         _binding = null

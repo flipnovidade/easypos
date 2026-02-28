@@ -187,5 +187,5 @@ class ViewOrderFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
-    
+
 }
