@@ -4,10 +4,10 @@
     <selectionStates>
       <SelectionState runConfigName="app">
         <option name="selectionMode" value="DIALOG" />
-        <DropdownSelection timestamp="2026-02-21T20:00:38.076646Z">
+        <DropdownSelection timestamp="2026-02-28T18:09:44.584831Z">
           <Target type="DEFAULT_BOOT">
             <handle>
-              <DeviceId pluginId="LocalEmulator" identifier="path=/Users/felippeferreira/.android/avd/Caixa.avd" />
+              <DeviceId pluginId="Default" identifier="serial=127.0.0.1:6555;connection=bb12a404" />
             </handle>
           </Target>
         </DropdownSelection>
@@ -15,17 +15,12 @@
           <targets>
             <Target type="DEFAULT_BOOT">
               <handle>
-                <DeviceId pluginId="LocalEmulator" identifier="path=/Users/felippeferreira/.android/avd/Caixa.avd" />
+                <DeviceId pluginId="PhysicalDevice" identifier="serial=R5CW80HAPSA" />
               </handle>
             </Target>
             <Target type="DEFAULT_BOOT">
               <handle>
-                <DeviceId pluginId="LocalEmulator" identifier="path=/Users/felippeferreira/.android/avd/Pixel_6_Pro_2.avd" />
-              </handle>
-            </Target>
-            <Target type="DEFAULT_BOOT">
-              <handle>
-                <DeviceId pluginId="LocalEmulator" identifier="path=/Users/felippeferreira/.android/avd/Pixel_6_Pro.avd" />
+                <DeviceId pluginId="Default" identifier="serial=127.0.0.1:6555;connection=bb12a404" />
               </handle>
             </Target>
           </targets>
